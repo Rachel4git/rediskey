@@ -226,6 +226,7 @@ public class gui_demo {
             if(jtf.getText() == "AAA")
                 System.out.println("****************AAAAAAAAAAAAAAA");
         }
+
     }
 }
 
