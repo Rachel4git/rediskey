@@ -1,8 +1,14 @@
 import javax.swing.*;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.security.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,17 +35,20 @@ public class crete_redis {
 //        String RDS=creat_redis(r, r,false );
 //        System.out.println(RDS);
 
-//        String t = creat_md5("1111111111","aaaaaaaaaaaaaaa");
+//        String t = creat_md5("454657567","的官方发的规范");
 //        System.out.println(t);
 
 //        boolean c = checkNum(new String[]{"fdg","","djfdsf","dfjdkf"});
 //        System.out.println(c);
         String[] ss1 ={"AAA","BBB","20190109","FM2029"};  //20190109,  FM2029
-        String[] ss2 ={"CCC","DDD","20190109","FM2029"};
+        String[] ss2 ={"CCC","DDD","20190109","MU2029"};
         String[] rk = create(ss1,ss2);
         System.out.println(rk[0]);
         System.out.println(rk[1]);
-
+         String AAA = ss2[3].substring(0, 2);
+//          boolean isband= connecting(ss1[3].substring(0, 2),ss2[3].substring(0, 2));
+//
+//        System.out.println(isband);
 
 
     }
@@ -75,9 +84,9 @@ public class crete_redis {
         if (vv1==true && vv2 == true){
             para1 = checkCity(ss1[0]) && checkCity(ss1[1]) && checkDate(ss1[2]) && chechFlightNo(ss1[3]);
             para2 = checkCity(ss2[0]) && checkCity(ss2[1]) && checkDate(ss2[2]) && chechFlightNo(ss2[3]);
-            boolean isband = true;
+            boolean isband = false;
             //进行捆绑航司的查询
-
+            isband= connecting(ss1[3].substring(0, 2),ss2[3].substring(0, 2));
             //非捆绑航司
             if(!isband){
                 if(!para1)
@@ -166,9 +175,47 @@ public class crete_redis {
         return  var;
     }
 
-    //连接小二后台
+    //连接MySQL数据库 查询捆绑航司
     //public  static boolean checkBand()
+    public static boolean  connecting(String  air1,String air2) {
+        boolean isband = false;
+        ResultSet rs = null;
+        Connection con = null;
+        String driver = "com.mysql.jdbc.Driver"; //驱动程序名
+        String url = "jdbc:mysql://10.100.157.78:3500/TCFlyIntAv";
+        String user = "TCFlyIntAv";
+        String password = "Xpwn0Vi5Oy8VhayZ689f";
+        try {
+            Class.forName(driver);  //加载驱动程序
+            con = DriverManager.getConnection(url, user, password);
+            //if(!con.isClosed())
 
+            Statement sta = con.createStatement(); //创建statement对象 用来执行SQL语句
+            rs = sta.executeQuery("SELECT  *  from  ivis_binding_airline where airline1='" + air1 +"' AND airline2 ='" + air2 +"' "); //where airline1 = %s and airline2 =%s ",air1,air2
+            if (rs.next())
+                isband = true;
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                rs.close();
+                rs.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return isband;
+    }
 
     //生成redis key
     //1
@@ -177,14 +224,16 @@ public class crete_redis {
         return  key;
     }
     //2 md5
+
     public static  String creat_md5(String key1,String key2) {
         char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'A', 'B', 'C', 'D', 'E', 'F' };
         String new_key = key1+key2;
         try {
-            MessageDigest md = MessageDigest.getInstance(key1 + key2);  // 创建一个md5算法对象
-            byte[] messageByte = md.digest(new_key.getBytes());
+            MessageDigest md = MessageDigest.getInstance("MD5");  // 创建一个md5算法对象
+            byte[] messageByte = md.digest(new_key.getBytes(StandardCharsets.UTF_8)); //调用digest方法 进行加密
 //        String resultString = byteArrayToHexString(messageByte);
+            //转换为16进制
             int j = messageByte.length;
             char str[] = new char[j * 2];
             int k = 0;
@@ -194,7 +243,7 @@ public class crete_redis {
                 str[k++] = hexDigits[byte0 & 0xf];
 
             }
-            return new String(str).toUpperCase();
+            return new String(str).toUpperCase(); //转换为大写
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -209,9 +258,9 @@ public class crete_redis {
 
     public  static String[] creat_rediskey(String key1,String key2){
         String[] rediss={"",""};
-        //String md5s = creat_md5( key1, key2);
-        rediss[0] = key1.substring(0, 16) + " " + key1+"-"+"md5s";
-        rediss[1] = key2.substring(0, 16) + " " + key2+"-"+"md5s";
+        String md5s = creat_md5( key1, key2);
+        rediss[0] = key1.substring(0, 16) + " " + key1+"-"+md5s;
+        rediss[1] = key2.substring(0, 16) + " " + key2+"-"+md5s;
         return  rediss;
     }
 
