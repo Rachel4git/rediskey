@@ -33,20 +33,21 @@ public class operate_redis {
 
     }
     public static void main(String[] args){
-        String key = "ADDBKK20180201ET628-03D73543F011B5157ED9DC95D147F943";
-//        String value = "";ADDBKK20180201ET
+        String key = "ADDHKG20180428ET608-FD1B698542A0E67AD6E2AF291FA6F60A";
+        Jedis jds = connect2MySQL();
+        List<String> vlu= search ( jds, key);
+        System.out.println(vlu);
+        String  se = revert(jds,key,"dfldkgjkdfjgkfdgkdfjgkdfjgldfk");
+        System.out.println(se);
+        String de = delete ( jds, key);
+        System.out.println(de);
+
         //连接redis
-        Jedis jds = new Jedis("10.99.1.188",11111);
+//        Jedis jds = new Jedis("10.99.1.188",11111);
+//        List<String> value = jds.hmget(StringUtils.substring(key,0,16),StringUtils.substring(key,16));
 //        jds.set("name","xinxin");
-//        System.out.println(jds.get("ADDBJS20180113ET"));
 //        jds.del("name");
 //        List<String> vlu = search(key);
-//        System.out.println(vlu);
-//        System.out.println(key.substring(0,16));
-//        System.out.println(key.substring(key.length()-36));
-
-        System.out.println(delete (jds, key));
-
         //-----添加数据----------
 //        Map<String, String> map = new HashMap<String, String>();
 //        map.put("name", "xinxin");
@@ -58,31 +59,55 @@ public class operate_redis {
 ////        List<String> rsmap = jds.hmget("user", "name", "age", "qq");
 //        List<String> rsmap = jds.hmget(key.substring(0,16),key.substring(key.length()-36));
 //        System.out.println(rsmap);
-//        StringUtils.substring(key,33);
+
     }
-    public  static Jedis connect2MySQL (String key) {
+
+    //连接redis
+    public  static Jedis connect2MySQL () {
         Jedis jds = new Jedis("10.99.1.188",11111);
         return jds;
     }
 
-
-
+    //查询数据库
    public  static List<String> search (Jedis jds,String subkey){
-//       String subkey = StringUtils.substring(key,17);
-//       //连接数据库
-//       Jedis jds = new Jedis("10.99.1.188",11111);
-       //查询数据库
-       List<String> value = jds.hmget(StringUtils.substring(subkey,0,16),StringUtils.substring(subkey,16));
-       return  value;
+       String hashkey = StringUtils.substring(subkey, 0, 16);
+       String hashfiels = StringUtils.substring(subkey, 16);
+       List<String> hashvalue = null;
+       if (jds.exists(hashkey)) {
+           if (jds.ttl(hashkey) != -1) {
+               hashvalue = jds.hmget(hashkey, hashfiels);
+           }
+       }
+       return  hashvalue;
     }
 
+    //修改
     public  static String revert (Jedis jds,String subkey,String newvalue){
-    return  "修改成功";
+        String hashkey = StringUtils.substring(subkey, 0, 16);
+        String hashfiels = StringUtils.substring(subkey, 16);
+        String result = "设置失败";
+        if (jds.exists(hashkey)){
+            if (jds.ttl(hashkey) != -1) {
+               //设置value;
+                jds.hset(hashkey,hashfiels,newvalue);
+                result = "设置成功";
+            }
+        }
+        return  result;
     }
 
-
+    //删除
     public  static String delete (Jedis js, String subkey){
-        js.del(StringUtils.substring(subkey,0,16));
-        return  "删除成功";
+        String hashkey = StringUtils.substring(subkey, 0, 16);
+        String result = "";
+        if (js.exists(hashkey)){
+            js.del(hashkey);
+            result =  "删除成功";
+        }
+        else
+            result = "redis key 不存在";
+        return  result;
     }
+
+
 }
