@@ -102,6 +102,9 @@ public class home {
         if (StringUtils.isNotEmpty(rrkk1)) {
             subkey1 = StringUtils.substring(rrkk1, 16);
         }
+        if (StringUtils.isNotEmpty(rrkk2)) {
+            subkey2 = StringUtils.substring(rrkk2, 16);
+        }
         //search
         P4_buttons[0].addActionListener(new ActionListener() {
 
