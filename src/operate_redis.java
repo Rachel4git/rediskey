@@ -19,9 +19,6 @@ import java.util.Map;
 
 
 public class operate_redis {
-
-
-
     public  static void connect2Redis(){
         //连接数据库
 

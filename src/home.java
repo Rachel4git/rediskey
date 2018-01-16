@@ -1,5 +1,12 @@
+import org.apache.commons.lang.StringUtils;
+import redis.clients.jedis.Jedis;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import org.apache.commons.lang.StringUtils;
+import java.util.*;
 
 /**
  * Created by hd48552 on 2018/1/11.
@@ -54,51 +61,74 @@ public class home {
         frame1.setLayout(new GridLayout(6, 1));//网格式布局
         for (i=0;i<5;i++)
             frame1.add(panelss[i]);
-        //添加监听器
-        gui.addLis2But(P2_buttons);
-        //addLis2But(P2_buttons);
-        gui.addLis2But(P4_buttons);
-        gui.addLis2But(P5_buttons);
-//        P2_buttons[0].addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(e.getActionCommand()=="CREATE"){
-//                    System.out.println("*******************************");
-//                }
-//            }
-//        });
-        gui.addLis2Txt(P1_txtFields);
-//        String s=P1_txtFields[0].getText();
-//        if (s.equals("aaa")){
-//            System.out.println("aaaaaaaaaaaaa");
-//        }
+        frame1.setResizable(true);
 
 
         //********************************************create redis key***************************************************************
-
-        crete_redis cre = new crete_redis();
-        //获取Panel1中文本框内容 调用create函数
-        String[] ss1 ={"AAA","BBB","20190109","FM2029"};  //20190109,  FM2029
-        String[] ss2 ={"CCC","DDD","","FM2029"};
-        String[] rk = cre.create(ss1,ss2);
-        System.out.println(rk[0]);
-        System.out.println(rk[1]);
-        //将结果展示在Panel3中的文本框中
+        String[] ss1={"","","",""};
+        String[] ss2={"","","",""};
+        final String[] rk ;
+        P2_buttons[0].addActionListener(new ActionListener() {
+            int j;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getActionCommand()== P2_buttons[0].getText()) {
+                    //获取Panel1中文本框内容 调用create函数
+                    for (j = 0; j < P1_txtFields.length; j++) {
+                        if (j < 4)
+                            ss1[j] = P1_txtFields[j].getText();
+                        else
+                            ss2[j - 4] = P1_txtFields[j].getText();
+                    }
+                    crete_redis cre = new crete_redis();
+                    String[] rk = cre.create(ss1, ss2);
+                    //将结果展示在Panel3中的文本框中
+                    P3_txtFields[0].setText(rk[0]);
+                    P3_txtFields[1].setText(rk[1]);
+                }
+            }
+        });
 
 
         //********************************************operate redis key***************************************************************
-
+        //连接redis数据库
+        operate_redis ope = new operate_redis();
+        Jedis jds =ope.connect2MySQL();
+        //获取rediskey
+        String subkey1="";
+        String subkey2="";
+        String rrkk1 = P3_txtFields[0].getText();
+        String rrkk2 = P3_txtFields[1].getText();
+        if (StringUtils.isNotEmpty(rrkk1)) {
+            subkey1 = StringUtils.substring(rrkk1, 16);
+        }
         //search
+        P4_buttons[0].addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getActionCommand()== P4_buttons[0].getText()) {
+                    java.util.List<String> ls =ope.search(jds, subkey1);
+
+                    //将结果展示在Panel3中的文本框中
+                    P5_txtFields[0].setText(rk[0]);
+                    P5_txtFields[1].setText(rk[1]);
+                }
+            }
+        });
+
 
         //revert
+
+
 
         //delete
 
 
 
-
     }
-
-
-
 }
+
+
+
+

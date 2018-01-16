@@ -1,3 +1,9 @@
+
+
+
+
+import org.apache.commons.lang.StringUtils;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -167,10 +173,13 @@ public class crete_redis {
         int l= ss.length;
         boolean var = true;
         for (int i=0;i<4;i++){
-            if (ss[i]!="" && var)
+            if (StringUtils.isNotEmpty(ss[i]) && var) {
+//                var = ss[i] != "" && var;
                 continue;
+            }
             else
                 var = false;
+            break;
         }
         return  var;
     }
