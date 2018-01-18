@@ -189,49 +189,49 @@ public class gui_demo {
             P.add(L[elem[i]]);
     }
 
-    public  static  boolean addLis2But(JButton[] JBS){
-        boolean[] isClick = {false};
-        for(int i=0;i<JBS.length;i++){
-            JButton jb = JBS[i];
-            jb.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (e.getActionCommand()== jb.getText()) {
-                        System.out.println("****************" + jb.getText()+isClick[0]);
-                        isClick[0] = true;
-                        System.out.println("****************" + jb.getText()+isClick[0]);
-                    }
-                }
-            });
-        }
-        return  isClick[0];
-    }
-
-    public  static  void addLis2Txt(JTextField[] JTF){
-        for(int i=0;i<JTF.length;i++){
-            JTextField jtf = JTF[i];
-            jtf.addKeyListener(new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-//                    if(e.getKeyCode() == 10  ){
-//                        System.out.println("****************"+101010000);
+//    public  static  boolean addLis2But(JButton[] JBS){
+//        boolean[] isClick = {false};
+//        for(int i=0;i<JBS.length;i++){
+//            JButton jb = JBS[i];
+//            jb.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    if (e.getActionCommand()== jb.getText()) {
+//                        System.out.println("****************" + jb.getText()+isClick[0]);
+//                        isClick[0] = true;
+//                        System.out.println("****************" + jb.getText()+isClick[0]);
 //                    }
-                }
+//                }
+//            });
+//        }
+//        return  isClick[0];
+//    }
 
-                @Override
-                public void keyReleased(KeyEvent e) {
-
-                }
-            });
-            if(jtf.getText() == "AAA")
-                System.out.println("****************AAAAAAAAAAAAAAA");
-        }
-
-    }
+//    public  static  void addLis2Txt(JTextField[] JTF){
+//        for(int i=0;i<JTF.length;i++){
+//            JTextField jtf = JTF[i];
+//            jtf.addKeyListener(new KeyListener() {
+//                @Override
+//                public void keyTyped(KeyEvent e) {
+//
+//                }
+//
+//                @Override
+//                public void keyPressed(KeyEvent e) {
+////                    if(e.getKeyCode() == 10  ){
+////                        System.out.println("****************"+101010000);
+////                    }
+//                }
+//
+//                @Override
+//                public void keyReleased(KeyEvent e) {
+//
+//                }
+//            });
+//            if(jtf.getText() == "AAA")
+//                System.out.println("****************AAAAAAAAAAAAAAA");
+//        }
+//
+//    }
 }
 

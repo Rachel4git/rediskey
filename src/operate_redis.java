@@ -11,8 +11,11 @@
 
 
 import org.apache.commons.lang.StringUtils;
+import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCluster;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +33,14 @@ public class operate_redis {
 
     }
     public static void main(String[] args){
-        String key = "ADDHKG20180428ET608-FD1B698542A0E67AD6E2AF291FA6F60A";
-        Jedis jds = connect2MySQL();
-        List<String> vlu= search ( jds, key);
+        String key = "AMSZRH20180118KL1961";//"AAAAAA20181212CA1222-019F59321FAAF3C54725FB164AB6EF99";
+        JedisCluster jds = connect2MySQL();
+        List<String> vlu= search (jds, key);
         System.out.println(vlu);
-        String  se = revert(jds,key,"dfldkgjkdfjgkfdgkdfjgkdfjgldfk");
-        System.out.println(se);
-        String de = delete ( jds, key);
-        System.out.println(de);
+//        String  se = revert(jds,key,"dfldkgjkdfjgkfdgkdfjgkdfjgldfk");
+//        System.out.println(se);
+//        String de = delete ( jds, key);
+//        System.out.println(de);
 
         //连接redis
 //        Jedis jds = new Jedis("10.99.1.188",11111);
@@ -60,21 +63,28 @@ public class operate_redis {
     }
 
     //连接redis
-    public  static Jedis connect2MySQL () {
-        Jedis jds = new Jedis("10.99.1.188",11111);
+    public  static JedisCluster connect2MySQL () {
+        HostAndPort hostAndPort = new HostAndPort("10.99.1.188",11111);
+        JedisCluster jds = new JedisCluster(hostAndPort);
         return jds;
     }
 
     //查询数据库
-   public  static List<String> search (Jedis jds,String subkey){
+   public  static List<String> search (JedisCluster jds,String subkey){
        String hashkey = StringUtils.substring(subkey, 0, 16);
        String hashfiels = StringUtils.substring(subkey, 16);
-       List<String> hashvalue = null;
-       if (jds.exists(hashkey)) {
+       List<String> hashvalue = new ArrayList<String>();
+//       int sss;
+//       boolean bbb;
+       if (jds.exists(hashkey)) {//?????????????????????????????????????
            if (jds.ttl(hashkey) != -1) {
-               hashvalue = jds.hmget(hashkey, hashfiels);
+               hashvalue = jds.hmget(hashkey, hashfiels);//????????????????????????????????
+//                sss = hashvalue.size()+1;
+//                bbb = hashvalue.isEmpty();
            }
        }
+       else
+           hashvalue.add("数据库中不存在该redis key");
        return  hashvalue;
     }
 

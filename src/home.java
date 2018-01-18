@@ -1,3 +1,4 @@
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import redis.clients.jedis.Jedis;
 
@@ -6,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang.StringUtils;
+import redis.clients.jedis.JedisCluster;
+
 import java.util.*;
 
 /**
@@ -92,30 +95,56 @@ public class home {
 
         //********************************************operate redis key***************************************************************
         //连接redis数据库
-        operate_redis ope = new operate_redis();
-        Jedis jds =ope.connect2MySQL();
+
         //获取rediskey
-        String subkey1="";
-        String subkey2="";
-        String rrkk1 = P3_txtFields[0].getText();
-        String rrkk2 = P3_txtFields[1].getText();
-        if (StringUtils.isNotEmpty(rrkk1)) {
-            subkey1 = StringUtils.substring(rrkk1, 16);
-        }
-        if (StringUtils.isNotEmpty(rrkk2)) {
-            subkey2 = StringUtils.substring(rrkk2, 16);
-        }
+
         //search
         P4_buttons[0].addActionListener(new ActionListener() {
-
+            operate_redis ope = new operate_redis();
+            JedisCluster jds =ope.connect2MySQL();
+            String subkey1="";
+            String subkey2="";
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getActionCommand()== P4_buttons[0].getText()) {
-                    java.util.List<String> ls =ope.search(jds, subkey1);
+                    String rrkk1 = P3_txtFields[0].getText();
+                    String rrkk2 = P3_txtFields[1].getText();
+                    if (StringUtils.isNotEmpty(rrkk1)) {
+                        subkey1 = StringUtils.substring(rrkk1, 17);
+                        java.util.List<String> ls1 = ope.search(jds, subkey1);
+                        //??????????????????????????????
+                        //将结果展示在Panel3中的文本框中
+                        System.out.println(ls1.size());//(ls1.isEmpty());//ls1!=null&&//??????????????????????????????????????
+                        if(CollectionUtils.isNotEmpty(ls1)) {
+                            for(int k =0;k<ls1.size();k++){
+                                if (StringUtils.isNotEmpty(ls1.get(k)))
+                                    P5_txtFields[0].setText(ls1.get(k));
+                            }
+                        }
+                        else
+                        P5_txtFields[0].setText("查询无结果");
+                    }
+                    else
+                        P5_txtFields[0].setText("未获取到需要查询的rediskey");
 
-                    //将结果展示在Panel3中的文本框中
-                    P5_txtFields[0].setText(rk[0]);
-                    P5_txtFields[1].setText(rk[1]);
+                    if (StringUtils.isNotEmpty(rrkk2)) {
+                        subkey2 = StringUtils.substring(rrkk2, 17);
+                        java.util.List<String> ls2 = ope.search(jds, subkey2);//??????????????????????????????
+                        //将结果展示在Panel3中的文本框中
+                        if(!ls2.isEmpty()) {
+                            String sss= ls2.get(0);
+                            P5_txtFields[1].setText(ls2.get(0));
+                        }
+                        else
+                            P5_txtFields[1].setText("查询无结果");
+                    }
+                    else
+                        P5_txtFields[1].setText("未获取到需要查询的rediskey");
+
+
+
+
+
                 }
             }
         });

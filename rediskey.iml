@@ -52,5 +52,16 @@
         <jarDirectory url="file://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="commons-pool2-2.5.0" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2.1" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2.1" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
