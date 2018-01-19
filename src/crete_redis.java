@@ -153,7 +153,7 @@ public class crete_redis {
     }
 
     public static boolean chechFlightNo(String s) {
-        return s.matches("[0-9A-Z]{2}[0-9]+");
+        return s.matches("[0-9A-Z]{2}[0-9]{3,}");
     }
 
     public static boolean checkNum(String[] ss){

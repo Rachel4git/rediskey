@@ -45,10 +45,10 @@ public class home {
         //PANEL3
         gui_demo.add2P(panelss[2],P3_lables,new int[] {0});
         gui_demo.add2P(panelss[2],P3_txtFields,new int[] {0});
-        gui_demo.add2P(panelss[2],P3_buttons,new int[] {0});
+        //gui_demo.add2P(panelss[2],P3_buttons,new int[] {0});
         gui_demo.add2P(panelss[2],P3_lables,new int[] {1});
         gui_demo.add2P(panelss[2],P3_txtFields,new int[] {1});
-        gui_demo.add2P(panelss[2],P3_buttons,new int[] {1});
+        //gui_demo.add2P(panelss[2],P3_buttons,new int[] {1});
         //PANEL4
         gui_demo.add2P(panelss[3],P4_buttons,new int[] {0});
         //PANEL5
