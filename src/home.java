@@ -1,14 +1,12 @@
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import redis.clients.jedis.Jedis;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang.StringUtils;
 import redis.clients.jedis.JedisCluster;
-
 import java.util.*;
 
 /**
@@ -16,7 +14,6 @@ import java.util.*;
  */
 public class home {
     public static void main(String[] args) {
-
 
         //********************************************GUI***************************************************************
         int i;
@@ -26,7 +23,7 @@ public class home {
         panelss[0].setLayout(new GridLayout(3, 5));
         JTextField[] P1_txtFields = gui_demo.cre_txtField(8,10);
         JTextField[] P3_txtFields = gui_demo.cre_txtField(2,40);
-        JTextField[] P5_txtFields = gui_demo.cre_txtField(2,240,80);
+        JTextField[] P5_txtFields = gui_demo.cre_txtField(2,1100,50);
         JLabel[] P1_lables = gui_demo.cre_Lable(7,new String[]{"SegmentId","dep_city","arr_city","dep_date","flight_no","Segment1","Segment2"});
         JLabel[] P3_lables = gui_demo.cre_Lable(2,new String[]{"RedisKey1","RedisKey2"});
         JLabel[] P5_lables = gui_demo.cre_Lable(2,new String[]{"Value1","Value2"});
@@ -112,10 +109,8 @@ public class home {
                     if (StringUtils.isNotEmpty(rrkk1)) {
                         subkey1 = rrkk1;
                         java.util.List<String> ls1 = operate_redis.search(jds, subkey1);
-                        //??????????????????????????????
                         //将结果展示在Panel3中的文本框中
-                        //System.out.println(ls1.size());//(ls1.isEmpty());//ls1!=null&&//??????????????????????????????????????
-                        if(CollectionUtils.isNotEmpty(ls1)) {//field 不存在时 提示信息不正确
+                        if(CollectionUtils.isNotEmpty(ls1)) {
                             for(int k =0;k<ls1.size();k++){
                                 if (StringUtils.isNotEmpty(ls1.get(k)))
                                     P5_txtFields[0].setText(ls1.get(k));
@@ -132,20 +127,18 @@ public class home {
                         subkey2 = rrkk2;
                         java.util.List<String> ls2 = operate_redis.search(jds, subkey2);//??????????????????????????????
                         //将结果展示在Panel3中的文本框中
-                        if(!ls2.isEmpty()) {
-                            String sss= ls2.get(0);
-                            P5_txtFields[1].setText(ls2.get(0));
+                        if(CollectionUtils.isNotEmpty(ls2)) {
+                            for(int k =0;k<ls2.size();k++){
+                                if (StringUtils.isNotEmpty(ls2.get(k)))
+                                    P5_txtFields[1].setText(ls2.get(k));
+                                else {
+                                    P5_txtFields[1].setText("查询无结果");
+                                }
+                            }
                         }
-                        else
-                            P5_txtFields[1].setText("查询无结果");
                     }
                     else
                         P5_txtFields[1].setText("未获取到需要查询的rediskey");
-
-
-
-
-
                 }
             }
         });

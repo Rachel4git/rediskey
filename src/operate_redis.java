@@ -9,29 +9,17 @@
  *
  */
 
-
 import org.apache.commons.lang.StringUtils;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class operate_redis {
-    public  static void connect2Redis(){
-        //连接数据库
 
-        //查询redis
-
-        //将查询结果保存在map中
-
-        //返回查询结果
-
-    }
     public static void main(String[] args){
         String key = "AMSZRH20180118KL1961";//"AAAAAA20181212CA1222-019F59321FAAF3C54725FB164AB6EF99";
         JedisCluster jds = connect2MySQL();

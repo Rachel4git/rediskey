@@ -1,9 +1,5 @@
 
-
-
-
 import org.apache.commons.lang.StringUtils;
-
 import javax.swing.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,10 +14,6 @@ import java.sql.Statement;
 import java.security.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-
-
-
 import static java.util.regex.Pattern.matches;
 
 /**
@@ -46,12 +38,12 @@ public class crete_redis {
 
 //        boolean c = checkNum(new String[]{"fdg","","djfdsf","dfjdkf"});
 //        System.out.println(c);
-        String[] ss1 ={"AAA","BBB","20190109","FM2029"};  //20190109,  FM2029
-        String[] ss2 ={"CCC","DDD","20190109","MU2029"};
-        String[] rk = create(ss1,ss2);
-        System.out.println(rk[0]);
-        System.out.println(rk[1]);
-         String AAA = ss2[3].substring(0, 2);
+//        String[] ss1 ={"AAA","BBB","20190109","FM2029"};  //20190109,  FM2029
+//        String[] ss2 ={"CCC","DDD","20190109","MU2029"};
+//        String[] rk = create(ss1,ss2);
+//        System.out.println(rk[0]);
+//        System.out.println(rk[1]);
+//         String AAA = ss2[3].substring(0, 2);
 //          boolean isband= connecting(ss1[3].substring(0, 2),ss2[3].substring(0, 2));
 //
 //        System.out.println(isband);
@@ -153,7 +145,7 @@ public class crete_redis {
     }
 
     public static boolean chechFlightNo(String s) {
-        return s.matches("[0-9A-Z]{2}[0-9]{3,}");
+        return s.matches("[0-9A-Z]{2}[0-9]{3,4}");
     }
 
     public static boolean checkNum(String[] ss){
