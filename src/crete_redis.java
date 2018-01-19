@@ -129,10 +129,7 @@ public class crete_redis {
     public static boolean checkCity(String s){
         int l=s.length();
         if(l == 3){
-            if(s.matches("[A-Z]{3}"))
-                return  true;
-            else
-                return  false;
+            return s.matches("[A-Z]{3}");
         }
         else
             return  false;
@@ -146,10 +143,7 @@ public class crete_redis {
             if(s.matches("[0-9]{4}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{1}")) { //[0-9]{4}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{1}
                 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");//设置日期格式
                 String tday = df.format(new Date());// new Date()为获取当前系统时间
-                if(s.compareTo(tday)>0)
-                    return true;
-                else
-                    return  false;
+                return s.compareTo(tday) > 0;
             }
             else
                 return  false;
@@ -158,16 +152,9 @@ public class crete_redis {
             return  false;
     }
 
-    public static boolean chechFlightNo(String s){
-        int l=s.length();
-        if(l == 6)
-            if(s.matches("[A-Z]{2}[0-9]{4}"))
-               return  true;
-            else
-                return  false;
-        else
-            return false;
-        }
+    public static boolean chechFlightNo(String s) {
+        return s.matches("[0-9A-Z]{2}[0-9]+");
+    }
 
     public static boolean checkNum(String[] ss){
         int l= ss.length;
@@ -261,15 +248,15 @@ public class crete_redis {
     }
 
     public  static String creat_rediskey(String key){
-        String redis = key.substring(0, 16) + " " + key;
+        String redis =  key;
         return  redis;
     }
 
     public  static String[] creat_rediskey(String key1,String key2){
         String[] rediss={"",""};
         String md5s = creat_md5( key1, key2);
-        rediss[0] = key1.substring(0, 16) + " " + key1+"-"+md5s;
-        rediss[1] = key2.substring(0, 16) + " " + key2+"-"+md5s;
+        rediss[0] =key1+"-"+md5s;
+        rediss[1] =key2+"-"+md5s;
         return  rediss;
     }
 

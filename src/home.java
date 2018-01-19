@@ -22,44 +22,44 @@ public class home {
         int i;
         gui_demo gui = new gui_demo(); //gui.
         //创建组件
-        JPanel[] panelss = gui.cre_Panel(5);
+        JPanel[] panelss = gui_demo.cre_Panel(5);
         panelss[0].setLayout(new GridLayout(3, 5));
-        JTextField[] P1_txtFields =gui.cre_txtField(8,10);
-        JTextField[] P3_txtFields =gui.cre_txtField(2,40);
-        JTextField[] P5_txtFields =gui.cre_txtField(2,240,80);
-        JLabel[] P1_lables = gui.cre_Lable(7,new String[]{"SegmentId","dep_city","arr_city","dep_date","flight_no","Segment1","Segment2"});
-        JLabel[] P3_lables = gui.cre_Lable(2,new String[]{"RedisKey1","RedisKey2"});
-        JLabel[] P5_lables = gui.cre_Lable(2,new String[]{"Value1","Value2"});
-        JButton[] P2_buttons = gui.cre_Button(1,new  String[]{"CREATE"});
-        JRadioButton[] P3_buttons = gui.cre_JRButton(2);
-        JButton[] P4_buttons = gui.cre_Button(1,new  String[]{"SEARCH"});
-        JButton[] P5_buttons = gui.cre_Button(6,new  String[]{"TTL1","R1","D1","TTL2","R2","D2"});
+        JTextField[] P1_txtFields = gui_demo.cre_txtField(8,10);
+        JTextField[] P3_txtFields = gui_demo.cre_txtField(2,40);
+        JTextField[] P5_txtFields = gui_demo.cre_txtField(2,240,80);
+        JLabel[] P1_lables = gui_demo.cre_Lable(7,new String[]{"SegmentId","dep_city","arr_city","dep_date","flight_no","Segment1","Segment2"});
+        JLabel[] P3_lables = gui_demo.cre_Lable(2,new String[]{"RedisKey1","RedisKey2"});
+        JLabel[] P5_lables = gui_demo.cre_Lable(2,new String[]{"Value1","Value2"});
+        JButton[] P2_buttons = gui_demo.cre_Button(1,new  String[]{"CREATE"});
+        JRadioButton[] P3_buttons = gui_demo.cre_JRButton(2);
+        JButton[] P4_buttons = gui_demo.cre_Button(1,new  String[]{"SEARCH"});
+        JButton[] P5_buttons = gui_demo.cre_Button(6,new  String[]{"TTL1","R1","D1","TTL2","R2","D2"});
         //向面板内添加组件
         //PANEL1
-        gui.add2P(panelss[0],P1_lables,new int[] {0,1,2,3,4,5});
-        gui.add2P(panelss[0],P1_txtFields,new int[] {0,1,2,3});
-        gui.add2P(panelss[0],P1_lables,new int[] {6});
-        gui.add2P(panelss[0],P1_txtFields,new int[] {4,5,6,7});
+        gui_demo.add2P(panelss[0],P1_lables,new int[] {0,1,2,3,4,5});
+        gui_demo.add2P(panelss[0],P1_txtFields,new int[] {0,1,2,3});
+        gui_demo.add2P(panelss[0],P1_lables,new int[] {6});
+        gui_demo.add2P(panelss[0],P1_txtFields,new int[] {4,5,6,7});
         //PANEL2
-        gui.add2P(panelss[1],P2_buttons,new int[] {0});
+        gui_demo.add2P(panelss[1],P2_buttons,new int[] {0});
         //PANEL3
-        gui.add2P(panelss[2],P3_lables,new int[] {0});
-        gui.add2P(panelss[2],P3_txtFields,new int[] {0});
-        gui.add2P(panelss[2],P3_buttons,new int[] {0});
-        gui.add2P(panelss[2],P3_lables,new int[] {1});
-        gui.add2P(panelss[2],P3_txtFields,new int[] {1});
-        gui.add2P(panelss[2],P3_buttons,new int[] {1});
+        gui_demo.add2P(panelss[2],P3_lables,new int[] {0});
+        gui_demo.add2P(panelss[2],P3_txtFields,new int[] {0});
+        gui_demo.add2P(panelss[2],P3_buttons,new int[] {0});
+        gui_demo.add2P(panelss[2],P3_lables,new int[] {1});
+        gui_demo.add2P(panelss[2],P3_txtFields,new int[] {1});
+        gui_demo.add2P(panelss[2],P3_buttons,new int[] {1});
         //PANEL4
-        gui.add2P(panelss[3],P4_buttons,new int[] {0});
+        gui_demo.add2P(panelss[3],P4_buttons,new int[] {0});
         //PANEL5
-        gui.add2P(panelss[4],P5_lables,new int[] {0});
-        gui.add2P(panelss[4],P5_txtFields,new int[] {0});
-        gui.add2P(panelss[4],P5_buttons,new int[] {0,1,2});
-        gui.add2P(panelss[4],P5_lables,new int[] {1});
-        gui.add2P(panelss[4],P5_txtFields,new int[] {1});
-        gui.add2P(panelss[4],P5_buttons,new int[] {3,4,5});
+        gui_demo.add2P(panelss[4],P5_lables,new int[] {0});
+        gui_demo.add2P(panelss[4],P5_txtFields,new int[] {0});
+        gui_demo.add2P(panelss[4],P5_buttons,new int[] {0,1,2});
+        gui_demo.add2P(panelss[4],P5_lables,new int[] {1});
+        gui_demo.add2P(panelss[4],P5_txtFields,new int[] {1});
+        gui_demo.add2P(panelss[4],P5_buttons,new int[] {3,4,5});
         //将面板添加到框架
-        JFrame frame1 = gui.cre_Frame("GET YOUR REDIS HERE",500,1000);
+        JFrame frame1 = gui_demo.cre_Frame("GET YOUR REDIS HERE",500,1000);
         //frame1.add(panelss[0]);
         frame1.setLayout(new GridLayout(6, 1));//网格式布局
         for (i=0;i<5;i++)
@@ -84,7 +84,7 @@ public class home {
                             ss2[j - 4] = P1_txtFields[j].getText();
                     }
                     crete_redis cre = new crete_redis();
-                    String[] rk = cre.create(ss1, ss2);
+                    String[] rk = crete_redis.create(ss1, ss2);
                     //将结果展示在Panel3中的文本框中
                     P3_txtFields[0].setText(rk[0]);
                     P3_txtFields[1].setText(rk[1]);
@@ -101,7 +101,7 @@ public class home {
         //search
         P4_buttons[0].addActionListener(new ActionListener() {
             operate_redis ope = new operate_redis();
-            JedisCluster jds =ope.connect2MySQL();
+            JedisCluster jds = operate_redis.connect2MySQL();
             String subkey1="";
             String subkey2="";
             @Override
@@ -110,8 +110,8 @@ public class home {
                     String rrkk1 = P3_txtFields[0].getText();
                     String rrkk2 = P3_txtFields[1].getText();
                     if (StringUtils.isNotEmpty(rrkk1)) {
-                        subkey1 = StringUtils.substring(rrkk1, 17);
-                        java.util.List<String> ls1 = ope.search(jds, subkey1);
+                        subkey1 = rrkk1;
+                        java.util.List<String> ls1 = operate_redis.search(jds, subkey1);
                         //??????????????????????????????
                         //将结果展示在Panel3中的文本框中
                         //System.out.println(ls1.size());//(ls1.isEmpty());//ls1!=null&&//??????????????????????????????????????
@@ -119,17 +119,18 @@ public class home {
                             for(int k =0;k<ls1.size();k++){
                                 if (StringUtils.isNotEmpty(ls1.get(k)))
                                     P5_txtFields[0].setText(ls1.get(k));
+                                else {
+                                    P5_txtFields[0].setText("查询无结果");
+                                }
                             }
                         }
-                        else
-                        P5_txtFields[0].setText("查询无结果");
                     }
                     else
                         P5_txtFields[0].setText("未获取到需要查询的rediskey");
 
                     if (StringUtils.isNotEmpty(rrkk2)) {
-                        subkey2 = StringUtils.substring(rrkk2, 17);
-                        java.util.List<String> ls2 = ope.search(jds, subkey2);//??????????????????????????????
+                        subkey2 = rrkk2;
+                        java.util.List<String> ls2 = operate_redis.search(jds, subkey2);//??????????????????????????????
                         //将结果展示在Panel3中的文本框中
                         if(!ls2.isEmpty()) {
                             String sss= ls2.get(0);
