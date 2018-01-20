@@ -78,7 +78,6 @@ public class home {
                         else
                             ss2[j - 4] = P1_txtFields[j].getText();
                     }
-                    crete_redis cre = new crete_redis();
                     String[] rk = crete_redis.create(ss1, ss2);
                     //将结果展示在Panel3中的文本框中
                     P3_txtFields[0].setText(rk[0]);

@@ -200,7 +200,6 @@ public class crete_redis {
             catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return isband;
     }
