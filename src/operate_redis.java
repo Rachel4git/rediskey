@@ -22,7 +22,7 @@ public class operate_redis {
 
     public static void main(String[] args){
         String key = "AMSZRH20180118KL1961";//"AAAAAA20181212CA1222-019F59321FAAF3C54725FB164AB6EF99";
-        JedisCluster jds = connect2MySQL();
+        JedisCluster jds = connect2Redis();
         List<String> vlu= search (jds, key);
         System.out.println(vlu);
 //        String  se = revert(jds,key,"dfldkgjkdfjgkfdgkdfjgkdfjgldfk");
@@ -51,24 +51,20 @@ public class operate_redis {
     }
 
     //连接redis
-    public  static JedisCluster connect2MySQL () {
+    public  static JedisCluster connect2Redis () {
         HostAndPort hostAndPort = new HostAndPort("10.99.1.188",11111);
         JedisCluster jds = new JedisCluster(hostAndPort);
         return jds;
     }
 
     //查询数据库
-   public  static List<String> search (JedisCluster jds,String subkey){
-       String hashkey = StringUtils.substring(subkey, 0, 16);
-       String hashfiels = StringUtils.substring(subkey, 16);
+   public  static List<String> search (JedisCluster jds,String Rkey){
+       String hashkey = StringUtils.substring(Rkey, 0, 16);
+       String hashfiels = StringUtils.substring(Rkey, 16);
        List<String> hashvalue = new ArrayList<String>();
-//       int sss;
-//       boolean bbb;
        if (jds.exists(hashkey)) {//?????????????????????????????????????
            if (jds.ttl(hashkey) != -1) {
                hashvalue = jds.hmget(hashkey, hashfiels);//????????????????????????????????
-//                sss = hashvalue.size()+1;
-//                bbb = hashvalue.isEmpty();
            }
        }
        else
@@ -77,10 +73,10 @@ public class operate_redis {
     }
 
     //修改
-    public  static String revert (Jedis jds,String subkey,String newvalue){
-        String hashkey = StringUtils.substring(subkey, 0, 16);
-        String hashfiels = StringUtils.substring(subkey, 16);
-        String result = "设置失败";
+    public  static String revert (JedisCluster jds,String Rkey,String newvalue){
+        String hashkey = StringUtils.substring(Rkey, 0, 16);
+        String hashfiels = StringUtils.substring(Rkey, 16);
+        String result = "设置失败,数据库中不存在该redis key 或 该redis key已过期";
         if (jds.exists(hashkey)){
             if (jds.ttl(hashkey) != -1) {
                //设置value;

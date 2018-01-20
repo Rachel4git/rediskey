@@ -8,13 +8,12 @@ import java.awt.event.ActionListener;
 import org.apache.commons.lang.StringUtils;
 import redis.clients.jedis.JedisCluster;
 import java.util.*;
-
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 /**
  * Created by hd48552 on 2018/1/11.
  */
 public class home {
     public static void main(String[] args) {
-
         //********************************************GUI***************************************************************
         int i;
         gui_demo gui = new gui_demo(); //gui.
@@ -30,7 +29,7 @@ public class home {
         JButton[] P2_buttons = gui_demo.cre_Button(1,new  String[]{"CREATE"});
         JRadioButton[] P3_buttons = gui_demo.cre_JRButton(2);
         JButton[] P4_buttons = gui_demo.cre_Button(1,new  String[]{"SEARCH"});
-        JButton[] P5_buttons = gui_demo.cre_Button(6,new  String[]{"TTL1","R1","D1","TTL2","R2","D2"});
+        JButton[] P5_buttons = gui_demo.cre_Button(6,new  String[]{"TTL1"," RESET1 "," DELETE1 ","TTL2"," RESET2 "," DELETE2 "});
         //向面板内添加组件
         //PANEL1
         gui_demo.add2P(panelss[0],P1_lables,new int[] {0,1,2,3,4,5});
@@ -51,10 +50,10 @@ public class home {
         //PANEL5
         gui_demo.add2P(panelss[4],P5_lables,new int[] {0});
         gui_demo.add2P(panelss[4],P5_txtFields,new int[] {0});
-        gui_demo.add2P(panelss[4],P5_buttons,new int[] {0,1,2});
+        gui_demo.add2P(panelss[4],P5_buttons,new int[] {1,2});
         gui_demo.add2P(panelss[4],P5_lables,new int[] {1});
         gui_demo.add2P(panelss[4],P5_txtFields,new int[] {1});
-        gui_demo.add2P(panelss[4],P5_buttons,new int[] {3,4,5});
+        gui_demo.add2P(panelss[4],P5_buttons,new int[] {4,5});
         //将面板添加到框架
         JFrame frame1 = gui_demo.cre_Frame("GET YOUR REDIS HERE",500,1000);
         //frame1.add(panelss[0]);
@@ -62,7 +61,6 @@ public class home {
         for (i=0;i<5;i++)
             frame1.add(panelss[i]);
         frame1.setResizable(true);
-
 
         //********************************************create redis key***************************************************************
         String[] ss1={"","","",""};
@@ -89,30 +87,22 @@ public class home {
             }
         });
 
-
         //********************************************operate redis key***************************************************************
         //连接redis数据库
-
-        //获取rediskey
-
+        JedisCluster jds = operate_redis.connect2Redis();
         //search
         P4_buttons[0].addActionListener(new ActionListener() {
-            operate_redis ope = new operate_redis();
-            JedisCluster jds = operate_redis.connect2MySQL();
-            String subkey1="";
-            String subkey2="";
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getActionCommand()== P4_buttons[0].getText()) {
-                    String rrkk1 = P3_txtFields[0].getText();
-                    String rrkk2 = P3_txtFields[1].getText();
-                    if (StringUtils.isNotEmpty(rrkk1)) {
-                        subkey1 = rrkk1;
-                        java.util.List<String> ls1 = operate_redis.search(jds, subkey1);
+                    String Rkey1 = P3_txtFields[0].getText();
+                    String Rkey2 = P3_txtFields[1].getText();
+                    if (isNotEmpty(Rkey1)) {
+                        java.util.List<String> ls1 = operate_redis.search(jds, Rkey1);
                         //将结果展示在Panel3中的文本框中
                         if(CollectionUtils.isNotEmpty(ls1)) {
                             for(int k =0;k<ls1.size();k++){
-                                if (StringUtils.isNotEmpty(ls1.get(k)))
+                                if (isNotEmpty(ls1.get(k)))
                                     P5_txtFields[0].setText(ls1.get(k));
                                 else {
                                     P5_txtFields[0].setText("查询无结果");
@@ -123,13 +113,12 @@ public class home {
                     else
                         P5_txtFields[0].setText("未获取到需要查询的rediskey");
 
-                    if (StringUtils.isNotEmpty(rrkk2)) {
-                        subkey2 = rrkk2;
-                        java.util.List<String> ls2 = operate_redis.search(jds, subkey2);//??????????????????????????????
+                    if (isNotEmpty(Rkey2)) {
+                        java.util.List<String> ls2 = operate_redis.search(jds, Rkey2);//??????????????????????????????
                         //将结果展示在Panel3中的文本框中
                         if(CollectionUtils.isNotEmpty(ls2)) {
                             for(int k =0;k<ls2.size();k++){
-                                if (StringUtils.isNotEmpty(ls2.get(k)))
+                                if (isNotEmpty(ls2.get(k)))
                                     P5_txtFields[1].setText(ls2.get(k));
                                 else {
                                     P5_txtFields[1].setText("查询无结果");
@@ -142,12 +131,44 @@ public class home {
                 }
             }
         });
-
-
-        //revert
-
-
-
+        //reset
+        P5_buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getActionCommand()== P5_buttons[1].getText()) {
+                    String Rkey1 = P3_txtFields[0].getText();
+                    String vlu1 = P5_txtFields[0].getText();
+                    boolean b1 = isNotEmpty(Rkey1)&&StringUtils.isNotEmpty(vlu1);
+                    if (b1) {
+                        String Sresult = operate_redis.revert(jds, Rkey1,vlu1);
+                        //将结果展示在Panel3中的文本框中
+                        P5_txtFields[0].setText(Sresult);
+                    }
+                    else
+                        P5_txtFields[0].setText("Redis key 为空 or 新值为空");
+                }
+            }
+        });
+        P5_buttons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getActionCommand()== P5_buttons[4].getText()) {
+//                    String Rkey1 = P3_txtFields[0].getText();
+                    String Rkey2 = P3_txtFields[1].getText();
+//                    String vlu1 = P5_txtFields[0].getText();
+                    String vlu2 = P5_txtFields[1].getText();
+//                    boolean b1 = isNotEmpty(Rkey1)&&jds.exists( StringUtils.substring(Rkey1, 0, 16))&&(jds.ttl( StringUtils.substring(Rkey1, 0, 16))!= -1)&&StringUtils.isNotEmpty(vlu1);
+                    boolean b2 = isNotEmpty(Rkey2)&&StringUtils.isNotEmpty(vlu2);
+                    if (b2) {
+                        String Sresult = operate_redis.revert(jds, Rkey2,vlu2);
+                        //将结果展示在Panel3中的文本框中
+                        P5_txtFields[1].setText(Sresult);
+                    }
+                    else
+                        P5_txtFields[1].setText("Redis key 为空 or 新值为空");
+                }
+            }
+        });
         //delete
 
 
